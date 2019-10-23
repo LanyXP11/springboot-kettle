@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property resource="application.properties"/>
+    <property name="layout.pattern.default" value="[%d{yyyy-MM-dd HH:mm:ss} %p %c{1} %X{requestId}] %m%n"/>
+
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.log.level.console}</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${layout.pattern.default}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="serviceLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logback.log.dir}/haitang.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.log.level.service}</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${layout.pattern.default}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="infomationLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logback.log.dir}/infomationLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.log.level.console}</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${layout.pattern.default}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="accessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logback.log.dir}/access.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.log.level.console}</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${layout.pattern.default}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="accessInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logback.log.dir}/accessInfoLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.log.level.console}</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${layout.pattern.default}</pattern>
+        </encoder>
+    </appender>
+    <logger name="com.lx.kettle" level="DEBUG">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
+    <logger name="org.mybatis" level="DEBUG">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
+    <logger name="java.sql" level="DEBUG">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
+    <logger name="org.beetl.sql" level="DEBUG">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
+
+</configuration>
