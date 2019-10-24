@@ -55,4 +55,41 @@ public class JobServiceImpl implements JobService {
         long allCount = kJobDao.allCount(template);
         return BootTablePage.builder().rows(kJobList).total(allCount).build();
     }
+
+    /**
+     *
+     * @param categoryId
+     * @param jobName
+     * @param userId
+     * @return
+     */
+    @Override
+    public Long getStartTaskCount(Integer categoryId, String jobName, Integer userId) {
+        return getTaskCount(categoryId, jobName, userId, "1");
+    }
+
+    @Override
+    public Long getStopTaskCount(Integer categoryId, String jobName, Integer userId) {
+        return getTaskCount(categoryId, jobName, userId, "2");
+    }
+    private Long getTaskCount(Integer categoryId, String jobName, Integer userId, String type) {
+        long result = 0l;
+        KJob template = KJob.builder().addUser(userId).delFlag(1).build();
+        if (categoryId != null) {
+            template.setCategoryId(categoryId);
+        }
+        if (StringUtils.isNotBlank(jobName)) {
+            template.setJobName(jobName);
+        }
+        switch (type) {
+            case "1":
+                template.setJobStatus(1);
+                result = kJobDao.allCount(template);
+                break;
+            case "2":
+                template.setJobStatus(2);
+                result = kJobDao.allCount(template);
+        }
+        return result;
+    }
 }

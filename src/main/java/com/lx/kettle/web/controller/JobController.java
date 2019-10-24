@@ -56,5 +56,29 @@ public class JobController {
         return JSONUtils.objectToJson(pageList);
     }
 
+    /**
+     *
+     * @param categoryId
+     * @param jobName
+     * @param request
+     * @return
+     */
+    @RequestMapping("getStartTaskCount.shtml")
+    public String getStartTaskCount(@RequestParam("categoryId") Integer categoryId, @RequestParam("jobName") String jobName, HttpServletRequest request) {
+        KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
+        return JSONUtils.objectToJson(jobService.getStartTaskCount(categoryId, jobName, kUser.getuId()));
+    }
+    /**
+     *
+     * @param categoryId
+     * @param jobName
+     * @param request
+     * @return
+     */
+    @RequestMapping("getStopTaskCount.shtml")
+    public String getStopTaskCount(@RequestParam("categoryId") Integer categoryId, @RequestParam("jobName") String jobName, HttpServletRequest request) {
+        KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
+        return JSONUtils.objectToJson(jobService.getStopTaskCount(categoryId, jobName, kUser.getuId()));
+    }
 
 }

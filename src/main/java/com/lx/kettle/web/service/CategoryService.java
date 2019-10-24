@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface CategoryService {
     List getList(Integer userid);
+
+    Object getCategoryInfoByCategoryId(Integer categoryId);
 }

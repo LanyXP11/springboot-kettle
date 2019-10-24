@@ -3,6 +3,7 @@ package com.lx.kettle.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.lx.kettle.common.tootik.Constant;
 import com.lx.kettle.common.utils.JSONUtils;
+import com.lx.kettle.core.dto.ResultDto;
 import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,12 @@ public class CategoryController {
     public String simpleList(HttpServletRequest request) {
         KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
         List list = categoryService.getList(kUser.getuId());
-        log.info("查询当前用户userID={},分类详情为", kUser.getuId(), JSON.toJSONString(list));
+        log.info("查询当前用户userID={},分类详情为:{}", kUser.getuId(), JSON.toJSONString(list));
         return JSONUtils.objectToJson(list);
     }
+    @RequestMapping("getCategory.shtml")
+    public String getQuartz(Integer categoryId){
+        return ResultDto.success(categoryService.getCategoryInfoByCategoryId(categoryId));
+    }
+
 }

@@ -33,4 +33,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return resultList;
     }
+
+    /**
+     * 根据主键查询 CategoryInfo
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public KCategory getCategoryInfoByCategoryId(Integer categoryId) {
+        return categoryDao.single(categoryId);
+    }
 }
