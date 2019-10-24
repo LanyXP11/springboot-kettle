@@ -1,7 +1,12 @@
 package com.lx.kettle.web.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.lx.kettle.common.tootik.Constant;
+import com.lx.kettle.common.utils.JSONUtils;
+import com.lx.kettle.core.dto.BootTablePage;
 import com.lx.kettle.core.dto.ResultDto;
 import com.lx.kettle.core.model.KJob;
+import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.service.JobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,5 +40,21 @@ public class JobController {
         return ResultDto.success(kjob);
 
     }
+
+    /**
+     * 获取JOb列表
+     *
+     * @return
+     */
+    @RequestMapping("getList.shtml")
+    public String getJobList(HttpServletRequest request, @RequestParam("limit") Integer limit, @RequestParam("offset") Integer offset,
+                             @RequestParam("categoryId") Integer categoryId, @RequestParam("jobName") String jobName) {
+        KUser user = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
+        log.info("查询Job列表开始 参数limit={},offset={},categoryId={},jobName={}user={}:", limit, offset, categoryId, jobName, JSON.toJSONString(user));
+        BootTablePage pageList=jobService.getJobListResultBooTablePage(offset,limit,categoryId,jobName,user.getuId());
+        log.info("查询Job列表最终返回值：{}",JSON.toJSONString(pageList));
+        return JSONUtils.objectToJson(pageList);
+    }
+
 
 }
