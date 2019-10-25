@@ -9,10 +9,7 @@ import com.lx.kettle.core.model.KJob;
 import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.service.JobService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -51,13 +48,12 @@ public class JobController {
                              @RequestParam("categoryId") Integer categoryId, @RequestParam("jobName") String jobName) {
         KUser user = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
         log.info("查询Job列表开始 参数limit={},offset={},categoryId={},jobName={}user={}:", limit, offset, categoryId, jobName, JSON.toJSONString(user));
-        BootTablePage pageList=jobService.getJobListResultBooTablePage(offset,limit,categoryId,jobName,user.getuId());
-        log.info("查询Job列表最终返回值：{}",JSON.toJSONString(pageList));
+        BootTablePage pageList = jobService.getJobListResultBooTablePage(offset, limit, categoryId, jobName, user.getuId());
+        log.info("查询Job列表最终返回值：{}", JSON.toJSONString(pageList));
         return JSONUtils.objectToJson(pageList);
     }
 
     /**
-     *
      * @param categoryId
      * @param jobName
      * @param request
@@ -68,8 +64,8 @@ public class JobController {
         KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
         return JSONUtils.objectToJson(jobService.getStartTaskCount(categoryId, jobName, kUser.getuId()));
     }
+
     /**
-     *
      * @param categoryId
      * @param jobName
      * @param request
@@ -79,6 +75,31 @@ public class JobController {
     public String getStopTaskCount(@RequestParam("categoryId") Integer categoryId, @RequestParam("jobName") String jobName, HttpServletRequest request) {
         KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
         return JSONUtils.objectToJson(jobService.getStopTaskCount(categoryId, jobName, kUser.getuId()));
+    }
+
+    /**
+     * 根据JOBId查询JOB状态
+     *
+     * @param jobId
+     * @return
+     */
+    @RequestMapping({"getJobRunState.shtml"})
+    public String getJobRunState(@RequestParam("jobId") Integer jobId) {
+        return JSONUtils.objectToJson(this.jobService.getJobRunState(jobId));
+    }
+
+    /**
+     * 启动Job
+     *
+     * @param jobId
+     * @param request
+     * @return
+     */
+    @RequestMapping("start.shtml/{jobId}")
+    public String startJob(@PathVariable("jobId") Integer jobId, HttpServletRequest request) {
+        log.info("启动作业开始JobId={}", jobId);
+        jobService.start(jobId);
+        return ResultDto.success();
     }
 
 }

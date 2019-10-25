@@ -196,21 +196,8 @@
             },
             dataType: 'json'
         });
-        if (state == "BLOCKED") {
-            return "正在运行";
-        } else if (state == "NORMAL") {
-            return "空闲";
-        } else if (state == "ERROR") {
-            return "错误";
-        } else if (state == "COMPLETE") {
-            return "完成";
-        } else if (state == "PAUSED") {
-            return "暂停";
-        } else if (state == "NONE") {
-            return "停止";
-        } else {
-            return "未定义";
-        }
+        return state;
+
     }
 
     function actionFormatter(value, row, index) {
@@ -242,10 +229,7 @@
                     $.ajax({
                         type: 'POST',
                         async: true,
-                        url: 'job/start.shtml',
-                        data: {
-                            "jobId": row.jobId
-                        },
+                        url: 'job/start.shtml'+ row.jobId,
                         success: function (data) {
                             location.replace(location.href);
                         },

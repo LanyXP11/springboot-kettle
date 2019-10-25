@@ -24,11 +24,10 @@
         <commons-beanutils-core-version>1.8.3</commons-beanutils-core-version>
         <commons-codec-version>1.10</commons-codec-version>
         <quartz-version>2.2.1</quartz-version>
+        <kettle-version>8.0.0.0-28</kettle-version>
     </properties>
 
     <dependencies>
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -47,7 +46,6 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -85,7 +83,6 @@
             <artifactId>beetl-framework-starter</artifactId>
             <version>1.1.35.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetlsql</artifactId>
@@ -101,7 +98,7 @@
             <artifactId>druid</artifactId>
             <version>1.1.6</version>
         </dependency>
-        <!--commons相关-->
+        <!--commons-->
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
@@ -134,25 +131,33 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--hutool是一个国内开源的工具组件 满足绝大多数的常见的业务场景-->
+        <!--hutool-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>4.5.13</version>
         </dependency>
+        <!--quartz-->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>${quartz-version}</version>
         </dependency>
+        <!--kettle start-->
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz-jobs</artifactId>
-            <version>${quartz-version}</version>
+            <groupId>pentaho-kettle</groupId>
+            <artifactId>kettle-core</artifactId>
+            <version>${kettle-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
+            <groupId>pentaho-kettle</groupId>
+            <artifactId>kettle-engine</artifactId>
+            <version>${kettle-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pentaho-kettle</groupId>
+            <artifactId>kettle-dbdialog</artifactId>
+            <version>${kettle-version}</version>
         </dependency>
     </dependencies>
     <build>

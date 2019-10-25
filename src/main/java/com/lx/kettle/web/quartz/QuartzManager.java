@@ -13,7 +13,8 @@ import java.util.Map;
 @SuppressWarnings("all")
 @Slf4j
 public class QuartzManager {
-    private static SchedulerFactory schedulerFactory=new StdSchedulerFactory() ;
+    private static SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+
     /**
      * @param jobName          任务名
      *                         以作业为例：  JOB@1(资源库ID)@/job/mysql-mysql(JOB全路径)
@@ -60,10 +61,70 @@ public class QuartzManager {
             }
             return trigger.getNextFireTime();
         } catch (Exception e) {
-            log.error("添加定时任务出现异常异常信息message:{}",e);
+            log.error("添加定时任务出现异常异常信息message:{}", e);
             return null;
         }
     }
 
+    /**
+     * 添加一个Job  针对手动执行的时候添加次方法
+     *
+     * @param jobName
+     * @param jobGroupName
+     * @param triggerName
+     * @param triggerGroupName
+     * @param jobClass
+     * @param parameter
+     */
+    public static Date addOneJob(String jobName, String jobGroupName,
+                                 String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> parameter) {
+        try {
+            Scheduler sched = schedulerFactory.getScheduler();
+            // 任务名，任务组，任务执行类
+            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName).build();
+            // 添加任务执行的参数
+            parameter.forEach((k, v) -> {
+                jobDetail.getJobDataMap().put(k, v);
+            });
+            //3秒后立即执行，重复次数设为0，表示只执行一次
+            SimpleTrigger simpleTrigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroupName).startNow()
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(3).withRepeatCount(0))
+                    .build();
+            sched.scheduleJob(jobDetail, simpleTrigger);
+            if (!sched.isShutdown()) {
+                sched.start();
+            }
+            return simpleTrigger.getNextFireTime();
+        } catch (Exception e) {
+            log.error("添加一个一次性定时任务出现异常 异常详情Msg:{}", e);
+            return null;
+        }
+    }
 
+    /**
+     * 获取任务状态
+     * NONE: 不存在
+     * NORMAL: 正常
+     * PAUSED: 暂停
+     * COMPLETE:完成
+     * ERROR : 错误
+     * BLOCKED : 阻塞
+     *
+     * @param triggerName
+     * @param triggerGroupName
+     * @return name
+     */
+    public static String getTriggerState(String triggerName, String triggerGroupName) {
+        TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
+        String name = null;
+        try {
+            Scheduler scheduler = schedulerFactory.getScheduler();
+            Trigger.TriggerState triggerState = scheduler.getTriggerState(triggerKey);
+            name = triggerState.name();
+        } catch (Exception e) {
+            log.error("获取任务状态出现异常:{}", e);
+            return null;
+        }
+        return name;
+    }
 }

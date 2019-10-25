@@ -12,4 +12,8 @@ public interface JobService {
     Object getStartTaskCount(Integer categoryId, String jobName, Integer integer);
 
     Object getStopTaskCount(Integer categoryId, String jobName, Integer integer);
+
+    Object getJobRunState(Integer jobId);
+
+    void start(Integer jobId);
 }
