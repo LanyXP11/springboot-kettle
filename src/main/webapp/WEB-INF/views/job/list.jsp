@@ -229,7 +229,7 @@
                     $.ajax({
                         type: 'POST',
                         async: true,
-                        url: 'job/start.shtml'+ row.jobId,
+                        url: 'job/start.shtml/' + row.jobId,
                         success: function (data) {
                             location.replace(location.href);
                         },
