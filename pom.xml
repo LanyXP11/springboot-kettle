@@ -24,6 +24,7 @@
         <commons-beanutils-core-version>1.8.3</commons-beanutils-core-version>
         <commons-codec-version>1.10</commons-codec-version>
         <quartz-version>2.2.1</quartz-version>
+        <dependency.hadoop-shims-api.revision>80.2017.10.00-28</dependency.hadoop-shims-api.revision>
         <kettle-version>8.0.0.0-28</kettle-version>
     </properties>
 
@@ -113,23 +114,21 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils-core</artifactId>
             <version>${commons-beanutils-core-version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>servlet-api</artifactId>
-                    <groupId>javax.servlet</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>${commons-codec-version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>servlet-api</artifactId>
-                    <groupId>javax.servlet</groupId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-vfs2</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>17.0</version>
         </dependency>
         <!--hutool-->
         <dependency>
@@ -137,6 +136,8 @@
             <artifactId>hutool-all</artifactId>
             <version>4.5.13</version>
         </dependency>
+        <!--hive -->
+
         <!--quartz-->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
@@ -158,6 +159,77 @@
             <groupId>pentaho-kettle</groupId>
             <artifactId>kettle-dbdialog</artifactId>
             <version>${kettle-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pentaho</groupId>
+            <artifactId>metastore</artifactId>
+            <version>${kettle-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pentaho</groupId>
+            <artifactId>pentaho-metaverse-api</artifactId>
+            <version>${kettle-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.pentaho.di.plugins</groupId>
+            <artifactId>kettle-sap-plugin-core</artifactId>
+            <version>${kettle-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pentaho</groupId>
+            <artifactId>pentaho-hadoop-shims-api</artifactId>
+            <version>${dependency.hadoop-shims-api.revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>pentaho</groupId>
+            <artifactId>pentaho-metastore-locator-api</artifactId>
+            <version>${kettle-version}</version>
+        </dependency>
+        <!--hive-->
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>2.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty.orbit</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty.aggregate</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>tomcat</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>

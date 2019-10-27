@@ -99,4 +99,21 @@ public class PageController {
         model.addAttribute("categoryId", categoryId);
         return "category/edit";
     }
+
+    /*************************repostory************************/
+    @RequestMapping("repostory/listUI.shtml")
+    public String repostoryListUI() {
+        return "repository/list";
+    }
+
+    @RequestMapping("repository/addUI.shtml")
+    public String repositoryAddUI() {
+        return "repository/add";
+    }
+
+    @RequestMapping("repository/editUI.shtml")
+    public String repositoryEditUI(Integer repositoryId, Model model) {
+        model.addAttribute("repositoryId", repositoryId);
+        return "repository/edit";
+    }
 }

@@ -3,8 +3,10 @@ package com.lx.kettle;
 import com.alibaba.fastjson.JSON;
 import com.lx.kettle.common.tootik.Constant;
 import com.lx.kettle.core.mapper.KJobDao;
+import com.lx.kettle.core.mapper.KRepositoryTypeDao;
 import com.lx.kettle.core.mapper.KUserDao;
 import com.lx.kettle.core.model.KJob;
+import com.lx.kettle.core.model.KRepositoryType;
 import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.quartz.QuartzManager;
 import com.lx.kettle.web.quartz.TetsQuartz;
@@ -30,6 +32,8 @@ public class SpringbootJspApplicationTests {
     KUserDao kUserDao;
     @Autowired
     KJobDao kJobDao;
+    @Autowired
+    KRepositoryTypeDao kRepositoryTypeDao;
 
     @Test
     public void contextLoads() {
@@ -49,6 +53,15 @@ public class SpringbootJspApplicationTests {
         List<KJob> kJobList = kJobDao.pageQuery(KJob.builder().addUser(1).delFlag(1).build(), 0, 10);
         System.out.println("JOSN=====>" + JSON.toJSONString(kJobList));
     }
+
+    @Test
+    public void kRepositoryTypeDao() {
+        KRepositoryType kRepositoryType = KRepositoryType.builder().repositoryTypeId(1).build();
+//        KRepositoryType repositoryType = kRepositoryTypeDao.single(1);
+        List<KRepositoryType> all = kRepositoryTypeDao.all();
+        System.out.println(JSON.toJSON(all));
+    }
+
 
     /**
      * jobName 任务名:work1

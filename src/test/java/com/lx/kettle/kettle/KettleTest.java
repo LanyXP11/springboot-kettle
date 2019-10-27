@@ -14,7 +14,7 @@ public class KettleTest extends SpringbootJspApplicationTests {
 
     @Test
     public void connectionKettle() {
-        repositoryUtil.c
+
 
     }
 }
