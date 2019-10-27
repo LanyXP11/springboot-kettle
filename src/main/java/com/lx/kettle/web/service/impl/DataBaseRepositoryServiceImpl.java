@@ -1,5 +1,6 @@
 package com.lx.kettle.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.lx.kettle.common.kettle.repository.RepositoryUtils;
 import com.lx.kettle.core.dto.BootTablePage;
 import com.lx.kettle.core.mapper.KRepositoryDao;
@@ -36,6 +37,7 @@ public class DataBaseRepositoryServiceImpl implements DataBaseRepositoryService 
      */
     @Override
     public BootTablePage getList(Integer offset, Integer limit, Integer uId) {
+        log.info("");
         KRepository kRepository = KRepository.builder().addUser(uId).delFlag(1).build();
         List<KRepository> kRepositoryList = kRepositoryDao.template(kRepository);
         long allCount = kRepositoryDao.templateCount(kRepository);
@@ -82,5 +84,11 @@ public class DataBaseRepositoryServiceImpl implements DataBaseRepositoryService 
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void insert(KRepository repositorys) {
+        log.info("新增资源库参数:{}", JSON.toJSONString(repositorys));
+        kRepositoryDao.insert(repositorys);
     }
 }

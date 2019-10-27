@@ -2,6 +2,7 @@ package com.lx.kettle.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.beetl.sql.core.annotatoin.Table;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @Builder
 @Table(name = "k_repository")
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class KRepository extends BaseModel {
     //ID

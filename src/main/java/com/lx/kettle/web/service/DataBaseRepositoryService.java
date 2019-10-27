@@ -14,4 +14,6 @@ public interface DataBaseRepositoryService {
     Object getAccess();
 
     boolean ckeck(KRepository kRepository);
+
+    void insert(KRepository repositorys);
 }

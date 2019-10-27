@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /***
  * create by chenjiang on 2019/10/26 0026
@@ -39,6 +40,7 @@ public class RepostoryController {
         KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
         BootTablePage list = null;
         list = dataBaseRepositoryService.getList(offset, limit, kUser.getuId());
+        log.info("获取资源库列表返回参数:{}", JSONUtils.objectToJson(list));
         return JSONUtils.objectToJson(list);
     }
 
@@ -61,15 +63,36 @@ public class RepostoryController {
      */
     @RequestMapping("ckeck.shtml")
     public String check(@ModelAttribute KRepository kRepository, HttpServletRequest request) {
-        log.info("新增资源库测试连接开始 参数是:{}", JSON.toJSONString(kRepository));
+        log.info("新增资源库-测试连接开始 参数是:{}", JSON.toJSONString(kRepository));
         //添加判断 TODO
         KRepository repositorys = KRepository.builder().build();
-        BeanUtil.copyProperties(kRepository,repositorys);
-        if (dataBaseRepositoryService.ckeck(repositorys)){
+        BeanUtil.copyProperties(kRepository, repositorys);
+        if (dataBaseRepositoryService.ckeck(repositorys)) {
             return ResultDto.success("success");
-        }else {
+        } else {
             return ResultDto.success("fail");
         }
+    }
+
+    /**
+     * 新增资源库
+     *
+     * @param request
+     * @param kRepository
+     * @return
+     */
+    @RequestMapping("insert.shtml")
+    public String insert(HttpServletRequest request, @ModelAttribute KRepository kRepository) {
+        KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
+//        KRepository repositorys = KRepository.builder().delFlag(1).addUser(kUser.getuId()).editUser(kUser.getuId()).editTime(new Date()).addTime(new Date()).build();
+        kRepository.setAddTime(new Date());
+        kRepository.setDelFlag(1);
+        kRepository.setEditTime(new Date());
+        kRepository.setAddUser(kUser.getuId());
+        kRepository.setEditUser(kUser.getuId());
+        log.info("新增资源库参数:{}", kRepository);
+        dataBaseRepositoryService.insert(kRepository);
+        return ResultDto.success();
     }
 
 }
