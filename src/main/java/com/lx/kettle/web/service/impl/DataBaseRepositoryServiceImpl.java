@@ -91,4 +91,27 @@ public class DataBaseRepositoryServiceImpl implements DataBaseRepositoryService 
         log.info("新增资源库参数:{}", JSON.toJSONString(repositorys));
         kRepositoryDao.insert(repositorys);
     }
+
+    /**
+     * 没有返回null
+     *
+     * @param repositoryId
+     * @return
+     */
+    @Override
+    public KRepository getKRepositoryById(Integer repositoryId) {
+        return kRepositoryDao.single(repositoryId);
+    }
+
+    /**
+     * 根据ID删除 逻辑删除
+     *
+     * @param repositoryId
+     */
+    @Override
+    public void delete(Integer repositoryId) {
+        KRepository kRepository = kRepositoryDao.unique(repositoryId);
+        kRepository.setDelFlag(0);
+        kRepositoryDao.updateById(kRepository);
+    }
 }

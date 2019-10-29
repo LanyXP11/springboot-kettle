@@ -111,7 +111,7 @@ public class RepositoryUtils {
         KettleEnvironment.init();
         DatabaseMeta databaseMeta = new DatabaseMeta(null,
                 "MYSQL", "Native",
-                "192.168.37.130", "kettle",
+                "127.0.0.1", "kettle",
                 "3306", "root", "root");
         KettleDatabaseRepositoryMeta repositoryInfo = new KettleDatabaseRepositoryMeta();
         repositoryInfo.setConnection(databaseMeta);

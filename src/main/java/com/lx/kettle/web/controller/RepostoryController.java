@@ -95,4 +95,20 @@ public class RepostoryController {
         return ResultDto.success();
     }
 
+    /**
+     * 根据repositoryId查询
+     * @param repositoryId
+     * @return
+     */
+    @RequestMapping("getKRepository.shtml")
+    public String getKRepository(@RequestParam("repositoryId") Integer repositoryId){
+        return ResultDto.success(dataBaseRepositoryService.getKRepositoryById(repositoryId));
+    }
+    @RequestMapping("delete.shtml")
+    public String delete(@RequestParam("repositoryId") Integer repositoryId){
+        dataBaseRepositoryService.delete(repositoryId);
+        return ResultDto.success();
+    }
+
+
 }

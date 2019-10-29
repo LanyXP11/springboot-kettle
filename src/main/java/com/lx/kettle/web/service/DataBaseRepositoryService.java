@@ -16,4 +16,8 @@ public interface DataBaseRepositoryService {
     boolean ckeck(KRepository kRepository);
 
     void insert(KRepository repositorys);
+
+    Object getKRepositoryById(Integer repositoryId);
+
+    void delete(Integer repositoryId);
 }
