@@ -10,6 +10,7 @@ import com.lx.kettle.core.model.KRepository;
 import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.service.DataBaseRepositoryService;
 import lombok.extern.slf4j.Slf4j;
+import org.pentaho.di.core.exception.KettleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -108,6 +109,16 @@ public class RepostoryController {
     public String delete(@RequestParam("repositoryId") Integer repositoryId){
         dataBaseRepositoryService.delete(repositoryId);
         return ResultDto.success();
+    }
+    @RequestMapping("getSimpleList.shtml")
+    public String getSimpleList(HttpServletRequest request){
+        try {
+            KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
+            return JSONUtils.objectToJson(dataBaseRepositoryService.getListByUid(kUser.getuId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

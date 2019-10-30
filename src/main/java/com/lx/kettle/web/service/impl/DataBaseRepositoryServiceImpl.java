@@ -114,4 +114,12 @@ public class DataBaseRepositoryServiceImpl implements DataBaseRepositoryService 
         kRepository.setDelFlag(0);
         kRepositoryDao.updateById(kRepository);
     }
+
+    @Override
+    public Object getListByUid(Integer uId) {
+        KRepository kRepository = new KRepository();
+        kRepository.setAddUser(uId);
+        kRepository.setDelFlag(1);
+        return kRepositoryDao.template(kRepository);
+    }
 }

@@ -20,4 +20,6 @@ public interface DataBaseRepositoryService {
     Object getKRepositoryById(Integer repositoryId);
 
     void delete(Integer repositoryId);
+
+    Object getListByUid(Integer integer);
 }
