@@ -8,7 +8,7 @@
     <base href="<%=basePath %>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>Kettle大数据调度监控平台</title>
+    <title>玄壶大数据调度监控平台</title>
     <link rel="shortcut icon" href="static/img/favicon.ico">
     <link href="static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
@@ -100,7 +100,7 @@
                 <div class="navbar-header">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)"><i
                             class="fa fa-bars"></i> </a>
-                    <div class="navbar-title">Kettle大数据调度监控平台</div>
+                    <div class="navbar-title">玄壶大数据调度监控平台</div>
                 </div>
                 <div class="navbar-user">你好，${SESSION_ID.uNickname}</div>
             </nav>

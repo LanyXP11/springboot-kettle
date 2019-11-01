@@ -59,7 +59,7 @@ public class MainController {
         KUser user = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
         final HashMap<String, Object> resultMap = new HashMap<>();
         List<String> dateList = new ArrayList<String>();
-        for (int i = -6; i < 0; i++) {
+        for (int i = -6; i < 1; i++) {
             Calendar instance = Calendar.getInstance();
             instance.add(Calendar.DATE, i);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,7 +71,7 @@ public class MainController {
         resultMap.put("trans", transLine);
         Map<String, Object> jobLine = jobMonitorService.getJobLine(user.getuId());
         resultMap.put("job", jobLine);
-        log.info("[查询用户:{},前7天内的作业和转换的数据]", user, JSON.toJSONString(resultMap));
+        log.info("[查询用户UserID:{},前7天内的作业和转换的数据:{}]", user.getuId(), JSON.toJSONString(resultMap));
         return ResultDto.success(resultMap);
     }
 

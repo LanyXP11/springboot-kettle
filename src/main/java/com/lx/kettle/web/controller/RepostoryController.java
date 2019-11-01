@@ -1,11 +1,13 @@
 package com.lx.kettle.web.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
 import com.lx.kettle.common.tootik.Constant;
 import com.lx.kettle.common.utils.JSONUtils;
 import com.lx.kettle.core.dto.BootTablePage;
 import com.lx.kettle.core.dto.ResultDto;
+import com.lx.kettle.core.dto.kettle.RepositoryTree;
 import com.lx.kettle.core.model.KRepository;
 import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.service.DataBaseRepositoryService;
@@ -15,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.util.*;
 
 /***
  * create by chenjiang on 2019/10/26 0026
@@ -27,6 +29,44 @@ import java.util.Date;
 public class RepostoryController {
     @Autowired
     private DataBaseRepositoryService dataBaseRepositoryService;
+
+    /**
+     * @param request
+     * @param repositoryId
+     * @return
+     */
+    @RequestMapping("getJobTree.shtml")
+    public String getJobTreeByRepositoryId(HttpServletRequest request, @RequestParam("repositoryId") Integer repositoryId) {
+        try {
+            List<RepositoryTree> repositoryTreeList = dataBaseRepositoryService.getTreeList(repositoryId);
+            List<RepositoryTree> newRepositoryTreeList = new ArrayList();
+            if (CollectionUtil.isEmpty(repositoryTreeList)) {
+                log.info("获取资源库JOBTree 为空 返回数据");
+                return null;
+            }
+            for (RepositoryTree repositoryTree : repositoryTreeList) {
+                if ("0".equals(repositoryTree.getParent())) {
+                    repositoryTree.setParent("#");
+                }
+                if (repositoryTree.getId().indexOf("@") > 0) {
+                    repositoryTree.setIcon("none");
+                }
+                if (Constant.TYPE_TRANS.equals(repositoryTree.getType())) {
+                    Map<String, String> stateMap = new HashMap<String, String>();
+                    stateMap.put("disabled", "false");
+                    repositoryTree.setState(stateMap);
+                }
+                newRepositoryTreeList.add(repositoryTree);
+            }
+            log.info("获取资源库JOBTree返回结果集:{}",JSONUtils.objectToJson(newRepositoryTreeList));
+            return JSONUtils.objectToJson(newRepositoryTreeList);
+        } catch (Exception e) {
+            log.info("获取资源库JOBTree出现异常:{}", e);
+            return null;
+        }
+
+    }
+
 
     /**
      * 获取资源库列表
@@ -98,20 +138,23 @@ public class RepostoryController {
 
     /**
      * 根据repositoryId查询
+     *
      * @param repositoryId
      * @return
      */
     @RequestMapping("getKRepository.shtml")
-    public String getKRepository(@RequestParam("repositoryId") Integer repositoryId){
+    public String getKRepository(@RequestParam("repositoryId") Integer repositoryId) {
         return ResultDto.success(dataBaseRepositoryService.getKRepositoryById(repositoryId));
     }
+
     @RequestMapping("delete.shtml")
-    public String delete(@RequestParam("repositoryId") Integer repositoryId){
+    public String delete(@RequestParam("repositoryId") Integer repositoryId) {
         dataBaseRepositoryService.delete(repositoryId);
         return ResultDto.success();
     }
+
     @RequestMapping("getSimpleList.shtml")
-    public String getSimpleList(HttpServletRequest request){
+    public String getSimpleList(HttpServletRequest request) {
         try {
             KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
             return JSONUtils.objectToJson(dataBaseRepositoryService.getListByUid(kUser.getuId()));

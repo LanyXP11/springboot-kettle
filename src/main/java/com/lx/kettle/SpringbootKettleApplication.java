@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 /**
  * 项目启动入口
  */
+@Configuration
 @SpringBootApplication
 //@ComponentScan({"com.lx.kettle.web.*", "com.lx.kettle.core.*"})
 public class SpringbootKettleApplication extends SpringBootServletInitializer {

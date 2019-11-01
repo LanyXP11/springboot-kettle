@@ -3,6 +3,7 @@ package com.lx.kettle.web.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.lx.kettle.common.kettle.repository.RepositoryUtils;
 import com.lx.kettle.core.dto.BootTablePage;
+import com.lx.kettle.core.dto.kettle.RepositoryTree;
 import com.lx.kettle.core.mapper.KRepositoryDao;
 import com.lx.kettle.core.mapper.KRepositoryTypeDao;
 import com.lx.kettle.core.model.KRepository;
@@ -13,6 +14,7 @@ import org.pentaho.di.repository.kdr.KettleDatabaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /***
@@ -121,5 +123,29 @@ public class DataBaseRepositoryServiceImpl implements DataBaseRepositoryService 
         kRepository.setAddUser(uId);
         kRepository.setDelFlag(1);
         return kRepositoryDao.template(kRepository);
+    }
+
+    /**
+     * 获取数据库资源库的树形菜单
+     *
+     * @param repositoryId
+     * @return
+     */
+    @Override
+    public List<RepositoryTree> getTreeList(Integer repositoryId) throws Exception {
+        KettleDatabaseRepository kettleDatabaseRepository = null;
+        List<RepositoryTree> allRepositoryTreeList = new ArrayList();
+        //先从缓存中获取 获取不到查询数据库
+        if (RepositoryUtils.KettleDatabaseRepositoryCatch.containsKey(repositoryId)) {
+            kettleDatabaseRepository = RepositoryUtils.KettleDatabaseRepositoryCatch.get(repositoryId);
+        } else {
+            KRepository kRepository = kRepositoryDao.unique(repositoryId);
+            kettleDatabaseRepository = RepositoryUtils.connectionRepository(kRepository);
+        }
+        if (null != kettleDatabaseRepository) {
+            List<RepositoryTree> repositoryTreeList = new ArrayList<RepositoryTree>();
+            allRepositoryTreeList = RepositoryUtils.getAllDirectoryTreeList(kettleDatabaseRepository, "/", repositoryTreeList);
+        }
+        return allRepositoryTreeList;
     }
 }

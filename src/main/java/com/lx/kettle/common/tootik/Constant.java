@@ -47,5 +47,23 @@ public final class Constant {
     public static final String TRIGGER_PREFIX = "TRIGGER";
     public static final String TRIGGER_GROUP_PREFIX = "TRIGGER_GROUP";
     public static final String QUARTZ_SEPARATE = "@";
+    /**
+     * Kettle
+     */
+    public static final String TYPE_JOB = "job";
+    public static final String TYPE_TRANS = "transformation";
+    public static final String TYPE_JOB_SUFFIX = ".kjb";
+    public static final String TYPE_TRANS_SUFFIX = ".ktr";
+    public static final String TYPE_TESTING = "TESTING";
+    public static final String TYPE_RUNNING = "RUNNING";
+    public static final String TYPE_USER_KETTLE = "KETTLE";
+    public static final String TYPE_AGAIN = "AGAIN";
+
+    public static final String STARTS_WITH_USD = "$";
+    public static final String STARTS_WITH_PARAM = "-param:";
+    public static final String SPLIT_PARAM = "-param:";
+    public static final String SPLIT_EQUAL = "=";
+    public static final String SPLIT_USD = "$";
+    public static final String KETTLE_REPO = "repo";
 
 }
