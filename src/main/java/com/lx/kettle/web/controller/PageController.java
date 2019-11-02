@@ -116,4 +116,25 @@ public class PageController {
         model.addAttribute("repositoryId", repositoryId);
         return "repository/edit";
     }
+    /*************************trans************************/
+    @RequestMapping("trans/listUI.shtml")
+    public String transListUI(){
+        return "trans/list";
+    }
+
+    @RequestMapping("trans/rAddUI.shtml")
+    public String transRAddUI(){
+        return "trans/r-add";
+    }
+
+    @RequestMapping("trans/fAddUI.shtml")
+    public String transFAddUI(){
+        return "trans/f-add";
+    }
+
+    @RequestMapping("trans/editUI.shtml")
+    public String transEditUI(Integer transId, Model model){
+        model.addAttribute("transId", transId);
+        return "trans/edit";
+    }
 }
