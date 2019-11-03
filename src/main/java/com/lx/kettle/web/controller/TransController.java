@@ -119,6 +119,11 @@ public class TransController {
     public String getTransRunState(@RequestParam("transId") Integer transId) {
         return JSONUtils.objectToJson(this.transService.getTransRunState(transId));
     }
+    @RequestMapping("getTrans.shtml")
+    public String getTrans(Integer transId) {
+        return ResultDto.success(transService.getTransByTransId(transId));
+    }
+
     /*@RequestMapping("startAll.shtml")
     public String startAll(Integer categoryId, String transName, HttpServletRequest request) {
         KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
