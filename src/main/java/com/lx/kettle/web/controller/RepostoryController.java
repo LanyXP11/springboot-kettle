@@ -31,6 +31,8 @@ public class RepostoryController {
     private DataBaseRepositoryService dataBaseRepositoryService;
 
     /**
+     * 获取资源库中的job
+     *
      * @param request
      * @param repositoryId
      * @return
@@ -58,13 +60,46 @@ public class RepostoryController {
                 }
                 newRepositoryTreeList.add(repositoryTree);
             }
-            log.info("获取资源库JOBTree返回结果集:{}",JSONUtils.objectToJson(newRepositoryTreeList));
+            log.info("获取资源库JOBTree返回结果集:{}", JSONUtils.objectToJson(newRepositoryTreeList));
             return JSONUtils.objectToJson(newRepositoryTreeList);
         } catch (Exception e) {
             log.info("获取资源库JOBTree出现异常:{}", e);
             return null;
         }
 
+    }
+
+    /**
+     * 获取资源库中的转换
+     *
+     * @param repositoryId
+     * @return
+     */
+    @RequestMapping("getTransTree.shtml")
+    public String getTransTree(Integer repositoryId) {
+        try {
+            List<RepositoryTree> repositoryTreeList = dataBaseRepositoryService.getTreeList(repositoryId);
+            List<RepositoryTree> newRepositoryTreeList = new ArrayList<RepositoryTree>();
+            for (RepositoryTree repositoryTree : repositoryTreeList) {
+                if ("0".equals(repositoryTree.getParent())) {
+                    repositoryTree.setParent("#");
+                }
+                if (repositoryTree.getId().indexOf("@") > 0) {
+                    repositoryTree.setIcon("none");
+                }
+                if (Constant.TYPE_JOB.equals(repositoryTree.getType())) {
+                    Map<String, String> stateMap = new HashMap<String, String>();
+                    stateMap.put("disabled", "false");
+                    repositoryTree.setState(stateMap);
+                }
+                newRepositoryTreeList.add(repositoryTree);
+            }
+            log.info("获取资源库TransTree返回结果集:{}", JSONUtils.objectToJson(newRepositoryTreeList));
+            return JSONUtils.objectToJson(newRepositoryTreeList);
+        } catch (Exception e) {
+            log.info("获取资源库Trans出现异常:{}", e);
+        }
+        return null;
     }
 
 
@@ -125,7 +160,7 @@ public class RepostoryController {
     @RequestMapping("insert.shtml")
     public String insert(HttpServletRequest request, @ModelAttribute KRepository kRepository) {
         KUser kUser = (KUser) request.getSession().getAttribute(Constant.SESSION_ID);
-//        KRepository repositorys = KRepository.builder().delFlag(1).addUser(kUser.getuId()).editUser(kUser.getuId()).editTime(new Date()).addTime(new Date()).build();
+        //        KRepository repositorys = KRepository.builder().delFlag(1).addUser(kUser.getuId()).editUser(kUser.getuId()).editTime(new Date()).addTime(new Date()).build();
         kRepository.setAddTime(new Date());
         kRepository.setDelFlag(1);
         kRepository.setEditTime(new Date());

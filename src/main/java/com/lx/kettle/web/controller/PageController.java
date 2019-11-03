@@ -72,6 +72,7 @@ public class PageController {
         return "job/r-add";
     }
 
+
     @RequestMapping("job/fAddUI.shtml")
     public String jobFAddUI() {
         return "job/f-add";
