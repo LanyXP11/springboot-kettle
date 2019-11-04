@@ -1,5 +1,7 @@
 package com.lx.kettle.common.tootik;
 
+import org.pentaho.di.core.logging.LogLevel;
+
 /***
  * create by chenjiang on 2019/10/19 0019
  * <p>
@@ -8,6 +10,14 @@ package com.lx.kettle.common.tootik;
  */
 
 public final class Constant {
+    /**
+     * encoding
+     */
+    public static final String DEFAULT_ENCODING = "UTF-8";
+    /***
+     * kettle LogLevel
+     */
+    public static LogLevel KETTLE_LOGLEVEL;
     /**
      * Session_id
      */
@@ -65,5 +75,34 @@ public final class Constant {
     public static final String SPLIT_EQUAL = "=";
     public static final String SPLIT_USD = "$";
     public static final String KETTLE_REPO = "repo";
+
+    /**
+     * 根据日志级别显示日志信息
+     *
+     * @param level
+     * @return
+     */
+    public static LogLevel logger(String level) {
+        LogLevel logLevel = null;
+        if ("basic".equals(level)) {
+            logLevel = LogLevel.BASIC;
+        } else if ("detail".equals(level)) {
+            logLevel = LogLevel.DETAILED;
+        } else if ("error".equals(level)) {
+            logLevel = LogLevel.ERROR;
+        } else if ("debug".equals(level)) {
+            logLevel = LogLevel.DEBUG;
+        } else if ("minimal".equals(level)) {
+            logLevel = LogLevel.MINIMAL;
+        } else if ("rowlevel".equals(level)) {
+            logLevel = LogLevel.ROWLEVEL;
+        } else if ("Nothing".endsWith(level)) {
+            logLevel = LogLevel.NOTHING;
+        } else {
+            logLevel = KETTLE_LOGLEVEL;
+        }
+        return logLevel;
+    }
+
 
 }
