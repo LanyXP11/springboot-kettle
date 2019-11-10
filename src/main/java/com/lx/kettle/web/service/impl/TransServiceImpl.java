@@ -9,8 +9,9 @@ import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.quartz.QuartzManager;
 import com.lx.kettle.web.quartz.TransQuartz;
 import com.lx.kettle.web.service.TransService;
-import com.lx.kettle.web.service.impl.biz.JobServiceBiz;
 
+
+import com.lx.kettle.web.service.impl.biz.TransServiceBiz;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.beetl.sql.core.DSTransactionManager;
