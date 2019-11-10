@@ -7,9 +7,10 @@ import com.lx.kettle.core.model.KQuartz;
 import com.lx.kettle.core.model.KTrans;
 import com.lx.kettle.core.model.KUser;
 import com.lx.kettle.web.quartz.QuartzManager;
+import com.lx.kettle.web.quartz.TransQuartz;
 import com.lx.kettle.web.service.TransService;
 import com.lx.kettle.web.service.impl.biz.JobServiceBiz;
-import com.lx.kettle.web.service.impl.biz.TransServiceBiz;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.beetl.sql.core.DSTransactionManager;
@@ -112,6 +113,46 @@ public class TransServiceImpl implements TransService {
         KTrans kTrans = kTransDao.unique(transId);
         Map<String, String> quartzBasic = transServiceBiz.getQuartzBasic(kTrans);
         return QuartzManager.getTriggerState(quartzBasic.get("triggerName"), quartzBasic.get("triggerGroupName"));
+    }
+
+    /**
+     * 启动转换
+     *
+     * @param transId
+     */
+    @Override
+    public void start(Integer transId) {
+        KTrans kTrans = kTransDao.unique(transId);
+        KQuartz kQuartz = kQuartzDao.unique(kTrans.getTransQuartz());
+        String quartzCron = kQuartz.getQuartzCron();
+        Integer userId = kTrans.getAddUser();
+        // 获取Quartz执行的基础信息
+        Map<String, String> quartzBasic = transServiceBiz.getQuartzBasic(kTrans);
+        // 获取Quartz的参数
+        Map<String, Object> quartzParameter = transServiceBiz.getQuartzParameter(kTrans);
+        Date nextExecuteTime = null;
+        // 判断转换执行类型
+        try {
+            if (new Integer(1).equals(kTrans.getTransQuartz())) {
+                nextExecuteTime = QuartzManager.addOneJob(quartzBasic.get("jobName"), quartzBasic.get("jobGroupName"),
+                        quartzBasic.get("triggerName"), quartzBasic.get("triggerGroupName"),
+                        TransQuartz.class, quartzParameter);
+            } else {// 如果是按照策略执行
+                //添加任务
+                nextExecuteTime = QuartzManager.addJob(quartzBasic.get("jobName"), quartzBasic.get("jobGroupName"),
+                        quartzBasic.get("triggerName"), quartzBasic.get("triggerGroupName"),
+                        TransQuartz.class, quartzCron, quartzParameter);
+            }
+        } catch (Exception e) {
+            kTrans.setTransStatus(2);
+            kTransDao.updateTemplateById(kTrans);
+            return;
+        }
+        /**
+         * 添加监控
+         */
+
+
     }
 
     /**

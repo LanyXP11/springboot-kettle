@@ -25,4 +25,6 @@ public interface TransService {
     void insert(KTrans kTrans, KUser user, String customerQuarz) throws SQLException;
 
     Object getTransRunState(Integer transId);
+
+    void start(Integer transId);
 }
