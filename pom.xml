@@ -27,6 +27,7 @@
         <dependency.hadoop-shims-api.revision>80.2017.10.00-28</dependency.hadoop-shims-api.revision>
         <kettle-version>8.0.0.0-28</kettle-version>
         <pdi-osgi-bridge.version>8.0.0.0-28</pdi-osgi-bridge.version>
+        <blueprints-core.version>2.6.0</blueprints-core.version>
     </properties>
 
     <dependencies>
@@ -233,7 +234,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>pentaho</groupId>
             <artifactId>pdi-osgi-bridge-core</artifactId>
@@ -248,6 +248,17 @@
             <groupId>pentaho</groupId>
             <artifactId>pentaho-big-data-api-mapreduce</artifactId>
             <version>${kettle-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tinkerpop.blueprints</groupId>
+            <artifactId>blueprints-core</artifactId>
+            <version>${blueprints-core.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--hive-->
         <dependency>
@@ -314,6 +325,12 @@
         </dependency>
 
     </dependencies>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>pentaho</id>-->
+            <!--<url>http://nexus.pentaho.org/content/groups/omni/</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
     <build>
         <plugins>
             <plugin>
