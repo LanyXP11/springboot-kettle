@@ -27,4 +27,6 @@ public interface TransService {
     Object getTransRunState(Integer transId);
 
     void start(Integer transId);
+
+    void stop(Integer transId);
 }

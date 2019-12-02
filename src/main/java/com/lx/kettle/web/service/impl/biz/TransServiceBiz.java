@@ -2,6 +2,7 @@ package com.lx.kettle.web.service.impl.biz;
 
 import com.lx.kettle.common.tootik.Constant;
 import com.lx.kettle.core.mapper.KRepositoryDao;
+import com.lx.kettle.core.mapper.KTransMonitorDao;
 import com.lx.kettle.core.model.KRepository;
 import com.lx.kettle.core.model.KTrans;
 import com.lx.kettle.core.model.KTransMonitor;
@@ -27,6 +28,9 @@ import java.util.Map;
 public class TransServiceBiz {
     @Autowired
     private KRepositoryDao kRepositoryDao;
+
+    @Autowired
+    private KTransMonitorDao kTransMonitorDao;
 
     @Value("${datasource.exam.url}")
     private String url;
@@ -112,9 +116,45 @@ public class TransServiceBiz {
      * @param transId         转换ID
      * @param nextExecuteTime
      */
-    private void addMonitor(Integer userId, Integer transId, Date nextExecuteTime) {
+    public void addMonitor(Integer userId, Integer transId, Date time) {
         KTransMonitor build = KTransMonitor.builder().addUser(userId).monitorTrans(transId).build();
+        KTransMonitor kTransMonitorOne = this.kTransMonitorDao.templateOne(build);
+        //如果不为空的话 仅仅更新状态 为空初始化数据
+        if (kTransMonitorOne != null) {
+            kTransMonitorOne.setMonitorStatus(1);
+            kTransMonitorOne.setRunStatus(new StringBuilder().append(kTransMonitorOne.getRunStatus()).append(",").append(new Date().getTime()).append(Constant.RUNSTATUS_SEPARATE).toString());
+            kTransMonitorOne.setNextExecuteTime(time);
+            kTransMonitorDao.updateTemplateById(kTransMonitorOne);
+        } else {
+            KTransMonitor bean = KTransMonitor.builder()
+                    .monitorTrans(transId)
+                    .addUser(userId)
+                    .monitorSuccess(0)
+                    .monitorFail(0)
+                    .runStatus(new StringBuilder().append(new Date().getTime()).append(Constant.RUNSTATUS_SEPARATE).toString())
+                    .monitorStatus(1)
+                    .nextExecuteTime(time).build();
+            kTransMonitorDao.insert(bean);
+        }
     }
 
-
+    /**
+     * 移除任务
+     *
+     * @param userId
+     * @param transId
+     */
+    public void removeMonitor(Integer userId, Integer transId) {
+        KTransMonitor transMonitor = KTransMonitor.builder().addUser(userId).monitorTrans(transId).build();
+        KTransMonitor resultBean = this.kTransMonitorDao.templateOne(transMonitor);
+        resultBean.setMonitorStatus(2);
+        StringBuilder runStatusBuilder = new StringBuilder();
+        runStatusBuilder.append(resultBean.getRunStatus()).append(new Date().getTime());
+        resultBean.setRunStatus(runStatusBuilder.toString());
+        int i = kTransMonitorDao.updateTemplateById(resultBean);
+        if (i < 0) {
+            log.error("移除任务失败Userid={},transId={}", userId, transId);
+            throw new RuntimeException("移除任务失败");
+        }
+    }
 }

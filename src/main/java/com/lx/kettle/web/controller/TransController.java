@@ -119,7 +119,6 @@ public class TransController {
     public String getTransRunState(@RequestParam("transId") Integer transId) {
         return JSONUtils.objectToJson(this.transService.getTransRunState(transId));
     }
-
     @RequestMapping("getTrans.shtml")
     public String getTrans(Integer transId) {
         return ResultDto.success(transService.getTransByTransId(transId));
@@ -139,11 +138,17 @@ public class TransController {
         log.info("启动转换结束耗时:{},毫秒", (System.currentTimeMillis() - start));
         return ResultDto.success();
     }
-
-
-
-
-
+    /**
+     * 停止转换
+     *
+     * @param transId
+     * @return
+     */
+    @RequestMapping("stop.shtml")
+    public String stop(@RequestParam("transId") Integer transId) {
+        transService.stop(transId);
+        return ResultDto.success();
+    }
 
     /*@RequestMapping("startAll.shtml")
     public String startAll(Integer categoryId, String transName, HttpServletRequest request) {

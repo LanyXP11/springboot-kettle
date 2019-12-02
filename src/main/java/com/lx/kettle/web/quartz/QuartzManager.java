@@ -57,6 +57,7 @@ public class QuartzManager {
             sched.scheduleJob(jobDetail, trigger);
             // 启动
             if (!sched.isShutdown()) {
+                log.info("启动任务开始........");
                 sched.start();
             }
             return trigger.getNextFireTime();
@@ -79,6 +80,7 @@ public class QuartzManager {
     public static Date addOneJob(String jobName, String jobGroupName,
                                  String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> parameter) {
         try {
+
             Scheduler sched = schedulerFactory.getScheduler();
             // 任务名，任务组，任务执行类
             JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName).build();
@@ -92,6 +94,7 @@ public class QuartzManager {
                     .build();
             sched.scheduleJob(jobDetail, simpleTrigger);
             if (!sched.isShutdown()) {
+                log.info("手动开启任务开始.......");
                 sched.start();
             }
             return simpleTrigger.getNextFireTime();
@@ -126,5 +129,27 @@ public class QuartzManager {
             return null;
         }
         return name;
+    }
+
+    /**
+     * 移除任务
+     *
+     * @param jobName
+     * @param jobGroupName
+     * @param triggerName
+     * @param triggerGroupName
+     */
+    public static void removeJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName) {
+        try {
+            Scheduler sched = schedulerFactory.getScheduler();
+            TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
+            sched.pauseTrigger(triggerKey);// 停止触发器
+            sched.unscheduleJob(triggerKey);// 移除触发器
+            sched.interrupt(JobKey.jobKey(jobName, jobGroupName));
+            sched.deleteJob(JobKey.jobKey(jobName, jobGroupName));// 删除任务
+        } catch (Exception e) {
+            log.info("移除任务失败:jobName={},jobGroupName={},triggerName={},triggerGroupName={}", jobName, jobGroupName, triggerName, triggerGroupName);
+            throw new RuntimeException(e);
+        }
     }
 }

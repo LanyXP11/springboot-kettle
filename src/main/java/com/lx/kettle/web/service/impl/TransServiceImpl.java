@@ -152,8 +152,44 @@ public class TransServiceImpl implements TransService {
         /**
          * 添加监控
          */
+        this.transServiceBiz.addMonitor(userId, transId, nextExecuteTime);
+        //更新状态
+        kTrans.setTransStatus(1);
+        int i = kTransDao.updateTemplateById(kTrans);
+        if (i < 0) {
+            log.error("启动转换更新任务的状态失败transId={}", transId);
+            throw new RuntimeException("启动转换失败");
+        }
+    }
 
+    /**
+     * 停止转换
+     *
+     * @param transId
+     */
+    @Override
+    public void stop(Integer transId) {
+        KTrans kTrans = this.kTransDao.unique(transId);
+        Integer userId = kTrans.getAddUser();
+        Map<String, String> quartzBasic = transServiceBiz.getQuartzBasic(kTrans);
+        ////如果是只执行一次 不允许移除任务
+        if (new Integer(1).equals(kTrans.getTransQuartz())) {
+            QuartzManager.removeJob(quartzBasic.get("jobName"), quartzBasic.get("jobGroupName"), quartzBasic.get("triggerName"), quartzBasic.get("triggerGroupName"));
+        } else {
+            QuartzManager.removeJob(quartzBasic.get("jobName"), quartzBasic.get("jobGroupName"), quartzBasic.get("triggerName"), quartzBasic.get("triggerGroupName"));
+        }
+        /**
+         * 移除任务
+         */
+        this.transServiceBiz.removeMonitor(userId, transId);
+        //更新状态
+        kTrans.setTransStatus(2);
+        int i = kTransDao.updateTemplateById(kTrans);
+        if (i < 0) {
+            log.error("停止转换失败transId={}", transId);
+            throw new RuntimeException("停止转化失败");
 
+        }
     }
 
     /**
