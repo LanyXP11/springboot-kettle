@@ -81,5 +81,13 @@
         <appender-ref ref="consoleLog"/>
         <appender-ref ref="serviceLog"/>
     </logger>
+    <logger name="org.pentaho" level="DEBUG">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
+    <logger name="org.pentaho.di" level="DEBUG">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="serviceLog"/>
+    </logger>
 
 </configuration>
