@@ -1,5 +1,6 @@
 package com.lx.kettle.core.init;
 
+import com.lx.kettle.common.kettle.kettleinit.KettleInit;
 import lombok.extern.slf4j.Slf4j;
 import org.pentaho.di.core.KettleEnvironment;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +22,8 @@ public class KettleCommandLineRunner implements CommandLineRunner {
         long startLog = System.currentTimeMillis();
         log.info("初始化kettle环境开始");
         KettleEnvironment.init();
-        log.info("初始化kettle环境结束 耗时:{}:毫秒", (System.currentTimeMillis() - startLog));
+        log.info("初始化自定义kettle环境开始");
+//        KettleInit.init();//TODO
+        log.info("初始化kettle环境结束 总耗时:{}:毫秒", (System.currentTimeMillis() - startLog));
     }
 }

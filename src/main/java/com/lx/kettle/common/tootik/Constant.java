@@ -1,6 +1,11 @@
 package com.lx.kettle.common.tootik;
 
+import lombok.extern.slf4j.Slf4j;
+import org.pentaho.di.core.Const;
 import org.pentaho.di.core.logging.LogLevel;
+
+import java.io.FileInputStream;
+import java.util.Properties;
 
 /***
  * create by chenjiang on 2019/10/19 0019
@@ -8,8 +13,8 @@ import org.pentaho.di.core.logging.LogLevel;
  *     全局通用常量类设置
  * </p>
  */
-
-public final class Constant {
+@Slf4j
+public final class Constant extends Const {
     /**
      * encoding
      */
@@ -76,6 +81,7 @@ public final class Constant {
     public static final String SPLIT_USD = "$";
     public static final String KETTLE_REPO = "repo";
 
+
     /**
      * 根据日志级别显示日志信息
      *
@@ -102,6 +108,57 @@ public final class Constant {
             logLevel = KETTLE_LOGLEVEL;
         }
         return logLevel;
+    }
+
+    public static String KETTLE_HOME;
+    public static String KETTLE_PLUGIN;
+    public static String KETTLE_SCRIPT;
+    public static final String UKETTLE = "kettle.properties";
+    public static Properties props;
+    static {
+        props = readProperties();
+        KETTLE_HOME = props.getProperty("kettle.home");
+        KETTLE_PLUGIN = props.getProperty("kettle.plugin");
+        KETTLE_SCRIPT = uKettle() + props.getProperty("kettle.script");
+        KETTLE_LOGLEVEL = logger(props.getProperty("kettle.loglevel"));
+    }
+
+    /**
+     * 读取配置
+     *
+     * @return
+     */
+    public static Properties readProperties() {
+        Properties p = new Properties();
+        try {
+            p.load(new FileInputStream(Constant.class.getResource("/").getPath().replace("%20", " ") + UKETTLE));
+        } catch (Exception e) {
+            log.error("读取配置失败:{}", e);
+        }
+        return p;
+    }
+
+    /**
+     * 读取Windos和Linux配置路径修改
+     *
+     * @return
+     */
+    private static String uKettle() {
+        String classPath = Constant.class.getResource("/").getPath().replace("%20", " ");
+        String iQuartz = "";
+        String index = "WEB-INF";
+        if (classPath.indexOf("target") > 0) {
+            index = "target";
+        }
+        if ("\\".equals(Constant.FILE_SEPARATOR)) {
+            iQuartz = classPath.substring(1, classPath.indexOf(index));
+            iQuartz = iQuartz.replace("/", "\\");
+        }
+        if ("/".equals(Constant.FILE_SEPARATOR)) {
+            iQuartz = classPath.substring(0, classPath.indexOf(index));
+            iQuartz = iQuartz.replace("\\", "/");
+        }
+        return iQuartz;
     }
 
 

@@ -16,7 +16,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
  */
 @Configuration
 @SpringBootApplication
-//@ComponentScan({"com.lx.kettle.web.*", "com.lx.kettle.core.*"})
 public class SpringbootKettleApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

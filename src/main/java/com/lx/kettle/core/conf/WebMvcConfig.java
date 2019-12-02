@@ -46,10 +46,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 }
             }
             if (!url.contains("view/loginUI.shtml") && url.contains("index/login.shtml")) {
-                /*if (sessionObje == null) {
-                    response.sendRedirect(request.getContextPath() + "/view/loginUI.shtml");
-                    return false;
-                }*/
                 return true;
             }
             return true;
