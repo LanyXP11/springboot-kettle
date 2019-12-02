@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Created by chenjiang on 2019/10/25
  * <p>
- *      Kettl初始化环境类-自定义
+ * Kettl初始化环境类-自定义
  * </p>
  */
 @SuppressWarnings("all")
@@ -86,16 +86,14 @@ public class KettleInit {
     private static void initLifecycleListeners() throws KettleException {
         final KettleLifecycleSupport s = new KettleLifecycleSupport();
         s.onEnvironmentInit();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                try {
-                    s.onEnvironmentShutdown();
-                } catch (Exception e) {
-                    System.err.println(BaseMessages.getString(PKG, ">>>>>>>>>>LifecycleSupport.ErrorInvokingKettleEnvironmentShutdownListeners>>>>>>>>>"));
-                    e.printStackTrace();
-                }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                s.onEnvironmentShutdown();
+            } catch (Exception e) {
+                System.err.println(BaseMessages.getString(PKG, ">>>>>>>>>>LifecycleSupport.ErrorInvokingKettleEnvironmentShutdownListeners>>>>>>>>>"));
+                e.printStackTrace();
             }
-        });
+        }));
     }
 
     /**
