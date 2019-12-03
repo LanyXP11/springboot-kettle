@@ -72,7 +72,7 @@ public class TransServiceBiz {
         quartzBasic.put("triggerName", triggerName);
         quartzBasic.put("triggerGroupName", triggerGroupName);
         // 拼接Quartz的任务名称
-        log.info("获取任务调度的基础信息结束jobName={},jobGroupName={},triggerName={},triggerGroupName={}", jobName, jobGroupName, triggerName, triggerGroupName);
+
         return quartzBasic;
     }
 
@@ -86,9 +86,12 @@ public class TransServiceBiz {
         }
         // 资源库对象
         parameter.put(Constant.REPOSITORYOBJECT, kRepository);
+
         // 数据库连接对象
         DBConnectionModel dbmodel = DBConnectionModel.builder().connectionUrl(url).connectionPassword(password).connectionUser(userName).connectionDriveClassName(dbDriverClassName).build();
         // 转换ID
+        parameter.put(Constant.DBCONNECTIONOBJECT, dbmodel);
+
         parameter.put(Constant.TRANSID, kTrans.getTransId());
         parameter.put(Constant.JOBTYPE, 2);
         String transPath = kTrans.getTransPath();
@@ -106,6 +109,7 @@ public class TransServiceBiz {
         parameter.put(Constant.LOGLEVEL, kTrans.getTransLogLevel());
         // 转换日志的保存位置
         parameter.put(Constant.LOGFILEPATH, kettleLogFilePath);
+        log.info("获取执行转换的参数:{}", parameter);
         return parameter;
     }
 
