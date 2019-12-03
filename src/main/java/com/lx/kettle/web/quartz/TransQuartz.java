@@ -1,5 +1,6 @@
 package com.lx.kettle.web.quartz;
 
+import com.alibaba.fastjson.JSON;
 import com.lx.kettle.common.kettle.repository.RepositoryUtils;
 import com.lx.kettle.common.tootik.Constant;
 import com.lx.kettle.core.model.KRepository;
@@ -40,8 +41,15 @@ import java.util.Date;
 public class TransQuartz implements InterruptableJob {
     private Trans trans;
 
+    /**
+     * 执行转换操作
+     *
+     * @param context
+     * @throws JobExecutionException
+     */
     public void execute(JobExecutionContext context) throws JobExecutionException {
         JobDataMap transDataMap = context.getJobDetail().getJobDataMap();
+        log.info(">>>>>>>>>>>>>>>>>>执行转换任务开始参数:{}", JSON.toJSONString(transDataMap));
         Object KRepositoryObject = transDataMap.get(Constant.REPOSITORYOBJECT);
         Object DbConnectionObject = transDataMap.get(Constant.DBCONNECTIONOBJECT);
         String transId = String.valueOf(transDataMap.get(Constant.TRANSID));
