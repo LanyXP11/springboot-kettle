@@ -32,10 +32,7 @@ public class QuartzManager {
      * @Description 添加一个定时任务
      */
     public static Date addJob(String jobName, String jobGroupName,
-                              String triggerName,
-                              String triggerGroupName,
-                              Class<? extends Job> jobClass,
-                              String cron, Map<String, Object> parameter) {
+                              String triggerName, String triggerGroupName, Class<? extends Job> jobClass, String cron, Map<String, Object> parameter) {
         try {
             Scheduler sched = schedulerFactory.getScheduler();
             // 任务名，任务组，任务执行类
@@ -57,12 +54,11 @@ public class QuartzManager {
             sched.scheduleJob(jobDetail, trigger);
             // 启动
             if (!sched.isShutdown()) {
-                log.info("启动任务开始........");
                 sched.start();
             }
             return trigger.getNextFireTime();
         } catch (Exception e) {
-            log.error("添加定时任务出现异常异常信息message:{}", e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -78,9 +74,8 @@ public class QuartzManager {
      * @param parameter
      */
     public static Date addOneJob(String jobName, String jobGroupName,
-                                 String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> parameter) {
+                                  String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> parameter) {
         try {
-
             Scheduler sched = schedulerFactory.getScheduler();
             // 任务名，任务组，任务执行类
             JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName).build();
@@ -93,13 +88,13 @@ public class QuartzManager {
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(3).withRepeatCount(0))
                     .build();
             sched.scheduleJob(jobDetail, simpleTrigger);
+            // 启动
             if (!sched.isShutdown()) {
-                log.info("手动开启任务开始.......");
                 sched.start();
             }
             return simpleTrigger.getNextFireTime();
         } catch (Exception e) {
-            log.error("添加一个一次性定时任务出现异常 异常详情Msg:{}", e);
+            e.printStackTrace();
             return null;
         }
     }
