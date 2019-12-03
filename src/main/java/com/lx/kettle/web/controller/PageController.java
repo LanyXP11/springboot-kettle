@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by chenjiang on 2019/10/18
  * <p>
- * 路由转发
+ *      路由转发
  * </P>
  */
 @RequestMapping("/view/")
@@ -117,25 +117,37 @@ public class PageController {
         model.addAttribute("repositoryId", repositoryId);
         return "repository/edit";
     }
+
     /*************************trans************************/
     @RequestMapping("trans/listUI.shtml")
-    public String transListUI(){
+    public String transListUI() {
         return "trans/list";
     }
 
     @RequestMapping("trans/rAddUI.shtml")
-    public String transRAddUI(){
+    public String transRAddUI() {
         return "trans/r-add";
     }
 
     @RequestMapping("trans/fAddUI.shtml")
-    public String transFAddUI(){
+    public String transFAddUI() {
         return "trans/f-add";
     }
 
     @RequestMapping("trans/editUI.shtml")
-    public String transEditUI(Integer transId, Model model){
+    public String transEditUI(Integer transId, Model model) {
         model.addAttribute("transId", transId);
         return "trans/edit";
+    }
+
+    /*************************monitor************************/
+    @RequestMapping("trans/monitor/listUI.shtml")
+    public String transMonitorListUI() {
+        return "monitor/t-list";
+    }
+
+    @RequestMapping("job/monitor/listUI.shtml")
+    public String jobMonitorListUI() {
+        return "monitor/j-list";
     }
 }
